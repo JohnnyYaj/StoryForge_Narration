@@ -1,26 +1,21 @@
 import openai
 import random
+from google.cloud import texttospeech
+
 
 # TODO:
 # Find an API To make convert thr story to a audio file the push it to tiktok 
 # Maybe make it faster?
-
-# import requests
-
-# url = "https://play.ht/api/v1/convert"
-
-# headers = {
-#     "accept": "audio/mpeg",
-#     "content-type": "application/json",
-#     "AUTHORIZATION": "edd0cb5664864461b143294c2ba15867",
-#     "X-USER-ID": "UMTlb9AGVzVpqfeB7U75V11o2903"
-# }
+# a way for the ouput.mp3 to update to another output1.mp3
 
 API_keys = open("API_KEY.txt",'r').read()
 openai.api_key = API_keys
 stories_Genre = ["Science Fiction", "Fantasy","Mystery/Thriler","Romance","Historical Fiction","Adventure","Dystopian","Young Adult","Horror","Slice of Life"]
 stories_made = []
 
+def create_mp3():
+    
+    return 
 
 # Picks 2 Random Genre
 def get_RandomGenre():
@@ -28,7 +23,7 @@ def get_RandomGenre():
     Genre1 = Genres[0]
     Genre2 = Genres[1]
         
-    return "can you create a story involving these 2 genres " + Genre2 + " and "+Genre1
+    return "can you create a story involving these 2 genres " + Genre2 + " and "+Genre1 + "and remove the Chapter # and just continue it like usual"
 
 # Makes a story genrated from 2 genres
 def make_stories():
@@ -38,12 +33,26 @@ def make_stories():
         messages = stories_made
     )
     return response['choices'][0]['message']['content']
+
+def synthesize_text(text):
+    client = texttospeech.TextToSpeechClient.from_service_account_file("key.json")
+
+    synthesis_input = texttospeech.SynthesisInput(text=text)
+
+    voice = texttospeech.VoiceSelectionParams(language_code="en-US", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL)
+    audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
     
+    response = client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
     
-# payload = {
-#     "content": [make_stories()],
-#     "voice": "Matthew"
-# }
+    output = f"output{str(count)}.mp3"
+    count+=1
     
-# response = requests.post(url, json=payload, headers=headers)
-# print(response.text)
+    with open(output, "wb") as out:
+        out.write(response.audio_content)
+        print('Audio content written to file "output.mp3"')
+
+
+if __name__ == "__main__":  
+    synthesize_text("Hello World")
+
+
