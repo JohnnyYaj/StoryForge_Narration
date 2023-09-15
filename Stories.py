@@ -3,19 +3,16 @@ import random
 from google.cloud import texttospeech
 
 
+
 # TODO:
-# Find an API To make convert thr story to a audio file the push it to tiktok 
+# Find an API To make convert thr story to a audio file the push it to tiktok or youtube 
 # Maybe make it faster?
-# a way for the ouput.mp3 to update to another output1.mp3
+# Find a Video editing API 
 
 API_keys = open("API_KEY.txt",'r').read()
-openai.api_key = API_keys
+openai.api_key = API_keys # OpenAi API Key to access OpenAi chatbase 
 stories_Genre = ["Science Fiction", "Fantasy","Mystery/Thriler","Romance","Historical Fiction","Adventure","Dystopian","Young Adult","Horror","Slice of Life"]
 stories_made = []
-
-def create_mp3():
-    
-    return 
 
 # Picks 2 Random Genre
 def get_RandomGenre():
@@ -34,22 +31,22 @@ def make_stories():
     )
     return response['choices'][0]['message']['content']
 
-def synthesize_text(text):
-    client = texttospeech.TextToSpeechClient.from_service_account_file("key.json")
+def synthesize_text(text): # The Main TTS 
+    client = texttospeech.TextToSpeechClient.from_service_account_file("key.json") # Google API KEY to access tts 
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
 
-    voice = texttospeech.VoiceSelectionParams(language_code="en-US", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL)
+    voice = texttospeech.VoiceSelectionParams(language_code="en-US-Polyglot-1", ssml_gender=texttospeech.SsmlVoiceGender.MALE) #Check this otherwise go back to te regular code 
     audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
     
     response = client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
     
-    output = f"output{str(count)}.mp3"
-    count+=1
+    rand_num = "".join([str(random.randint(0,5)) for x in range(5)]) # Creates a code so it is different from the others 
+    output = f"output{rand_num}.mp3"
     
-    with open(output, "wb") as out:
-        out.write(response.audio_content)
-        print('Audio content written to file "output.mp3"')
+    with open(output, "wb") as out: # Makes the MP3 
+        out.write(response.audio_content)  
+        print(f'Audio content written to file "{output}"')
 
 
 if __name__ == "__main__":  
