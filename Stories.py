@@ -10,9 +10,11 @@ import os
 # TODO:
 # Find an API To make convert thr story to a audio file the push it to tiktok or youtube 
 # Maybe make it faster?
-# Find a Video editing API 
-# Create a Function in which creates a txt file of the story 
-# Needs to save the story and write it into a txt file
+# Clean it up 
+# Miore Themes
+# Have Fun
+
+
 
 
 API_keys = open("API_KEY.txt",'r').read()
