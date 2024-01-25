@@ -5,17 +5,10 @@ from moviepy.editor import VideoFileClip, vfx ,AudioFileClip, afx, CompositeAudi
 from mutagen.mp3 import MP3
 import os
 
-
-
 # TODO:
-# Find an API To make convert thr story to a audio file the push it to tiktok or youtube 
-# Maybe make it faster?
 # Clean it up 
 # Miore Themes
 # Have Fun
-
-
-
 
 API_keys = open("API_KEY.txt",'r').read()
 openai.api_key = API_keys # OpenAi API Key to access OpenAi chatbase 
@@ -23,8 +16,9 @@ stories_Genre = ["Science Fiction", "Fantasy","Mystery/Thriler","Romance","Histo
 stories_made = []
 save_output = []
 
-if not os.path.exists("Output1"):
-    os.makedirs("test1")
+def check_path():
+    if not os.path.exists("Output"):
+        os.makedirs("test")
 
 # Picks 2 Random Genre
 def get_RandomGenre():
@@ -77,6 +71,7 @@ def create_video():
 
 
 if __name__ == "__main__":  
+    check_path()
     synthesize_text(make_stories())
     create_video()
 
